@@ -41,9 +41,6 @@ function statement (invoice, plays) {
     }
 
     // 将 switch 函数提出来
-    // --
-    // function amountFor(aPerformance, play) {
-    // ++
     function amountFor(aPerformance) {
         let result = 0
         switch(playFor(aPerformance).type) {
@@ -76,14 +73,8 @@ function statement (invoice, plays) {
     }).format
 
     for (let perf of invoice.perfomance) {
-        // --
-        // const play = plays[perf.playID]
-        // ++
-        const play = playFor(perf)
 
         // --
-        // let thisAmount = amountFor(perf, play)
-        // ++
         let thisAmount = amountFor(perf)
         
 
@@ -91,17 +82,15 @@ function statement (invoice, plays) {
         volumeCredits += Math.max(perf.audience - 30, 0)
 
         // add extra credit for every ten comedy attendees
-        // --
-        // if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5)
-        // ++
         if ("comedy" === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5)
 
         // print line for this order
-        // --
-        // result += ` ${play.name}: ${format(thisAmount/100)} (${perf.audience} seats)\n`
-        // ++
         result += ` ${playFor(perf).name}: ${format(thisAmount/100)} (${perf.audience} seats)\n`
-        totalAmount += thisAmount
+        // --
+        // totalAmount += thisAmount
+        // ++
+        totalAmount += amountFor(perf)
+
     }
     result += `Amount owed is ${format(totalAmount/100)}\n`
     result += `You earned ${volumeCredits} credits\n`
